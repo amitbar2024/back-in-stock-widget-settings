@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Settings</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .settings-container {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 500px; /* Max width for larger screens */
+            width: 90%; /* Full width for smaller screens */
+            margin: 0 auto; /* Center the panel */
+            transition: all 0.3s ease; /* Smooth transition for resizing */
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #6200ea; /* Default button color */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 15px;
+            width: 100%; /* Full width for button */
+        }
+        button:hover {
+            background-color: #3700b3; /* Darker shade on hover */
+        }
+
+        /* Media query for smaller screens */
+        @media (max-width: 400px) {
+            .settings-container {
+                padding: 15px;
+            }
+            button {
+                padding: 10px; /* Adjust button padding */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="settings-container">
+        <h1>Back in Stock Widget Settings</h1>
+        <form id="settingsForm">
+            <label for="bgColor">Background Color:</label>
+            <input type="color" id="bgColor" value="#ffffff">
+            
+            <label for="btnColor">Button Color:</label>
+            <input type="color" id="btnColor" value="#6200ea">
+            
+            <label for="inputBorderColor">Input Border Color:</label>
+            <input type="color" id="inputBorderColor" value="#ccc">
+            
+            <label for="textColor">Text Color:</label>
+            <input type="color" id="textColor" value="#000000">
+            
+            <button type="submit">Save Settings</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('settingsForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const bgColor = document.getElementById('bgColor').value;
+            const btnColor = document.getElementById('btnColor').value;
+            const inputBorderColor = document.getElementById('inputBorderColor').value;
+            const textColor = document.getElementById('textColor').value;
+
+            // Save the settings in localStorage or send them to your backend
+            localStorage.setItem('widgetSettings', JSON.stringify({
+                bgColor,
+                btnColor,
+                inputBorderColor,
+                textColor
+            }));
+
+            // Display confirmation message
+            alert('Settings saved!');
+
+            // Optionally, you can apply the settings immediately (if desired)
+            applySettings({
+                bgColor,
+                btnColor,
+                inputBorderColor,
+                textColor
+            });
+        });
+
+        // Function to apply settings (for demonstration purposes)
+        function applySettings(settings) {
+            document.body.style.backgroundColor = settings.bgColor;
+            const button = document.querySelector('button');
+            button.style.backgroundColor = settings.btnColor;
+
+            // Example of applying border color to an input field (if it exists)
+            const inputs = document.querySelectorAll('input[type="color"]');
+            inputs.forEach(input => {
+                input.style.borderColor = settings.inputBorderColor;
+            });
+            // Apply text color
+            document.body.style.color = settings.textColor;
+        }
+
+        // Load saved settings on page load (if available)
+        window.onload = function() {
+            const savedSettings = JSON.parse(localStorage.getItem('widgetSettings'));
+            if (savedSettings) {
+                applySettings(savedSettings);
+                document.getElementById('bgColor').value = savedSettings.bgColor;
+                document.getElementById('btnColor').value = savedSettings.btnColor;
+                document.getElementById('inputBorderColor').value = savedSettings.inputBorderColor;
+                document.getElementById('textColor').value = savedSettings.textColor;
+            }
+        };
+    </script>
+</body>
+</html>
